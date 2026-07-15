@@ -14,6 +14,7 @@ import {
 import { QueryPanelGeneratedQuery } from './query_panel_generated_query';
 import { usePPLExecuteQueryAction } from './actions/ppl_execute_query_action';
 import { useSetEditorTextWithQuery } from '../../application/hooks';
+import { useQueryAssistContext } from './use_query_assist_context';
 import './query_panel.scss';
 
 const QueryPanel = () => {
@@ -26,6 +27,9 @@ const QueryPanel = () => {
 
   // Register the PPL execute query action for assistant integration
   usePPLExecuteQueryAction(setEditorTextWithQuery);
+
+  // Register the natural language question as assistant context when the query
+  useQueryAssistContext();
 
   return (
     <EuiPanel paddingSize="s" borderRadius="none" className="exploreQueryPanel">
