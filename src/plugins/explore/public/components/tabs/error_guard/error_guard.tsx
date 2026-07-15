@@ -13,6 +13,7 @@ import { TabDefinition } from '../../../services/tab_registry/tab_registry_servi
 import { useTabError } from '../../../application/utils/hooks/use_tab_error';
 import { EXPLORE_PATTERNS_TAB_ID } from '../../../../common';
 import { PatternsErrorGuard } from './patterns_error_guard';
+import { AskErrorButton } from '../../ask_error_button/ask_error_button';
 
 const errorDefaultTitle = i18n.translate('explore.errorPanel.defaultTitle', {
   defaultMessage: 'An error occurred while executing the query',
@@ -42,9 +43,12 @@ export const ErrorGuard = ({ registryTab, children }: ErrorGuardProps): JSX.Elem
     <EuiErrorBoundary>
       <EuiFlexGroup direction="column" alignItems="center" className="exploreErrorGuard">
         <EuiIcon type="alert" size="xl" color="red" />
-        <EuiTitle size="l">
-          <h1>{error.message.reason || errorDefaultTitle}</h1>
-        </EuiTitle>
+        <div className="exploreErrorGuard__header">
+          <EuiTitle size="l">
+            <h1>{error.message.reason || errorDefaultTitle}</h1>
+          </EuiTitle>
+          <AskErrorButton error={error.message.details || error.message.reason} />
+        </div>
         <div className="exploreErrorGuard__errorsSection">
           <ErrorCodeBlock title={detailsText} text={error.message.details} />
           {error.message.type ? (

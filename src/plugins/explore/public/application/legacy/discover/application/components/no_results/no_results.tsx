@@ -48,6 +48,7 @@ import {
   SavedQueryService,
 } from '../../../../../../../../data/public';
 import { MetricsEmptyState } from '../../../../../pages/metrics/explore/components/metrics_empty_state';
+import { AskErrorButton } from '../../../../../../components/ask_error_button/ask_error_button';
 
 interface Props {
   queryString: QueryStringContract;
@@ -314,7 +315,8 @@ export const DiscoverNoResults = ({ queryString, query, savedQuery, timeFieldNam
                 {i18n.translate('explore.discover.emptyPrompt.body', {
                   defaultMessage:
                     'Try selecting a different data source, expanding your time range or modifying the query & filters.',
-                })}
+                })}{' '}
+                <AskErrorButton />
               </p>
             </EuiText>
           }
