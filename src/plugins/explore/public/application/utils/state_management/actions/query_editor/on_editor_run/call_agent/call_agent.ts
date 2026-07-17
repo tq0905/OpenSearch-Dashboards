@@ -16,6 +16,7 @@ import {
   AgentError,
   ProhibitedQueryError,
 } from '../../../../../../../components/query_panel/utils/error';
+import { createAskT2pplErrorButton } from '../../../../../../../components/query_panel/ask_t2ppl_error_button';
 import {
   setLastExecutedPrompt,
   setLastExecutedTranslatedQuery,
@@ -119,11 +120,15 @@ export const callAgentActionCreator = createAsyncThunk<
         }),
       });
     } else {
+      const chatService = services.core.chat;
       services.notifications.toasts.addError(error, {
         id: 'miscellaneous-prompt-error',
         title: i18n.translate('explore.queryPanel.miscellaneous-prompt-error', {
           defaultMessage: 'Failed to generate results',
         }),
+        extraAction: chatService?.isAvailable?.()
+          ? createAskT2pplErrorButton({ chatService, error: error as Error, question: editorText })
+          : undefined,
       });
     }
   } finally {
