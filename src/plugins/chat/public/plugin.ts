@@ -26,6 +26,7 @@ import { ChatService } from './services/chat_service';
 import { ChatHeaderButton } from './components/chat_header_button';
 import { toMountPoint } from '../../opensearch_dashboards_react/public';
 import { SuggestedActionsService } from './services/suggested_action';
+import { StarterSuggestionsService } from './services/starter_suggestions';
 import { isChatEnabled } from '../common/chat_capabilities';
 import { CommandRegistryService } from './services/command_registry_service';
 import { ConfirmationService } from './services/confirmation_service';
@@ -54,6 +55,7 @@ const isValidChatWindowState = (test: unknown): test is ChatWindowState => {
 export class ChatPlugin implements Plugin<ChatPluginSetup, ChatPluginStart> {
   private chatService: ChatService | undefined;
   private suggestedActionsService = new SuggestedActionsService();
+  private starterSuggestionsService = new StarterSuggestionsService();
   private commandRegistryService = new CommandRegistryService();
   private confirmationService = new ConfirmationService();
   private humanInputService = new HumanInputService();
@@ -139,6 +141,9 @@ export class ChatPlugin implements Plugin<ChatPluginSetup, ChatPluginStart> {
     return {
       suggestedActionsService: suggestedActionsSetup,
       commandRegistry: commandRegistrySetup,
+      starterSuggestions: {
+        registerProvider: (provider) => this.starterSuggestionsService.registerProvider(provider),
+      },
     };
   }
 
@@ -214,6 +219,7 @@ export class ChatPlugin implements Plugin<ChatPluginSetup, ChatPluginStart> {
       contextProvider: deps.contextProvider,
       charts: deps.charts,
       suggestedActionsService: this.suggestedActionsService!,
+      starterSuggestionsService: this.starterSuggestionsService,
       confirmationService: this.confirmationService,
       humanInputService: this.humanInputService,
     });
@@ -296,6 +302,7 @@ export class ChatPlugin implements Plugin<ChatPluginSetup, ChatPluginStart> {
     this.chatService?.destroy();
     this.confirmationService.cleanAll();
     this.humanInputService.cleanAll();
+    this.starterSuggestionsService.clear();
     AssistantActionService.getInstance().unregisterAction('ask_user');
   }
 }

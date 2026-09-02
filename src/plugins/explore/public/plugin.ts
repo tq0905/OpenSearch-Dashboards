@@ -106,6 +106,7 @@ import {
   registerAutoVisualizationAction,
   AUTO_VISUALIZATION_TOOL_NAME,
 } from './components/visualizations/actions/auto_visualization_action';
+import { registerExploreStarterSuggestions } from './starter_suggestions';
 
 export class ExplorePlugin implements Plugin<
   ExplorePluginSetup,
@@ -148,6 +149,7 @@ export class ExplorePlugin implements Plugin<
   private unregisterPPLLintFixAction?: () => void;
   private unregisterVisualizationTools?: () => void;
   private visualizationToolsWorkspaceSubscription?: Subscription;
+  private starterSuggestions?: ReturnType<typeof registerExploreStarterSuggestions>;
 
   constructor(private readonly initializerContext: PluginInitializerContext) {}
 
@@ -436,6 +438,9 @@ export class ExplorePlugin implements Plugin<
           } = await getPreloadedStore(services);
           services.store = store;
 
+          // Connect starter suggestions provider to the Redux store
+          this.starterSuggestions?.setStore(store);
+
           // Register abort action
           const abortActionId = `${PLUGIN_ID}`;
           const abortAction = createAbortDataQueryAction(abortActionId);
@@ -454,6 +459,7 @@ export class ExplorePlugin implements Plugin<
             unmount();
             unsubscribeStore();
             resetStore();
+            this.starterSuggestions?.clearStore();
             pluginsStart.data.query.queryString.clearQuery();
           };
         },
@@ -719,6 +725,11 @@ export class ExplorePlugin implements Plugin<
     core.chrome.navGroup.addNavLinksToGroup(DEFAULT_NAV_GROUPS.all, navLinks(false));
     this.registerEmbeddable(core, setupDeps);
 
+    // Register starter suggestions provider for chat plugin
+    if (setupDeps.chat) {
+      this.starterSuggestions = registerExploreStarterSuggestions(setupDeps.chat);
+    }
+
     setupDeps.urlForwarding.forwardApp('doc', PLUGIN_ID, (path) => {
       return `#${path}`;
     });
@@ -962,6 +973,8 @@ export class ExplorePlugin implements Plugin<
       this.editorStopUrlTracking();
     }
     this.unregisterPPLExecuteQueryAction?.();
+    this.starterSuggestions?.clearStore();
+    this.starterSuggestions?.registration.unregister();
     this.unregisterPPLLintFixAction?.();
     clearActivePPLLintFixSession();
     this.unregisterVisualizationTools?.();

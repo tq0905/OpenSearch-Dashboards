@@ -14,6 +14,7 @@ import { ContextProviderStart } from '../../../context_provider/public';
 
 import { ChatService } from '../services/chat_service';
 import { SuggestedActionsService } from '../services/suggested_action';
+import { StarterSuggestionsService } from '../services/starter_suggestions';
 import { ConfirmationService } from '../services/confirmation_service';
 import { HumanInputService } from '../services/human_input_service';
 import { ChatMount } from '../components/chat_mount';
@@ -41,6 +42,7 @@ export class ChatMountService {
     suggestedActionsService: SuggestedActionsService;
     confirmationService: ConfirmationService;
     humanInputService: HumanInputService;
+    starterSuggestionsService: StarterSuggestionsService;
   }): ChatMountStartContract {
     const { core, chatService } = options;
 

@@ -21,7 +21,7 @@
     "dashboard"
   ],
   "requiredBundles": ["opensearchDashboardsReact", "opensearchDashboardsUtils", "dashboard", "dataImporter", "queryEnhancements"],
-  "optionalPlugins": ["home", "share", "contextProvider", "datasetManagement", "dataImporter", "dataSource", "dataSourceManagement"],
+  "optionalPlugins": ["home", "share", "contextProvider", "datasetManagement", "dataImporter", "dataSource", "dataSourceManagement", "chat"],
   "configPath": ["explore"],
   "minDataSourceEngineVersions": {
     "Elasticsearch": "7.9.0"

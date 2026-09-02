@@ -18,3 +18,10 @@ export function plugin(initializerContext: PluginInitializerContext) {
 export { ChatPluginSetup, ChatPluginStart } from './types';
 export { SlashCommand, SlashCommandResult } from './services/slash_commands';
 export { ChatService } from './services/chat_service';
+export type {
+  StarterSuggestionItem,
+  StarterSuggestionsContext,
+  StarterSuggestionsProvider,
+  StarterSuggestionsRegistration,
+  StarterSuggestionsSetupContract,
+} from './services/starter_suggestions';

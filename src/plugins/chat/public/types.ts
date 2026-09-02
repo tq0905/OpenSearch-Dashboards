@@ -9,10 +9,12 @@ import { ChartsPluginStart } from '../../charts/public';
 import { ChatService } from './services/chat_service';
 import { SuggestedActionsServiceSetupContract } from './services/suggested_action';
 import { CommandRegistrySetup } from './services/command_registry_service';
+import { StarterSuggestionsSetupContract } from './services/starter_suggestions';
 
 export interface ChatPluginSetup {
   suggestedActionsService: SuggestedActionsServiceSetupContract;
   commandRegistry: CommandRegistrySetup;
+  starterSuggestions: StarterSuggestionsSetupContract;
 }
 
 export interface ChatPluginStart {

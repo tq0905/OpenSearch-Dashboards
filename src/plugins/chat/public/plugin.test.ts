@@ -5,6 +5,7 @@
 
 import { ChatPlugin } from './plugin';
 import { ChatService } from './services/chat_service';
+import { StarterSuggestionsService } from './services/starter_suggestions';
 import { toMountPoint } from '../../opensearch_dashboards_react/public';
 import { BehaviorSubject, of } from 'rxjs';
 import { ChatMountService } from './services/chat_mount_service';
@@ -111,6 +112,9 @@ describe('ChatPlugin', () => {
         commandRegistry: expect.objectContaining({
           registerCommand: expect.any(Function),
         }),
+        starterSuggestions: {
+          registerProvider: expect.any(Function),
+        },
       });
     });
 
@@ -552,6 +556,7 @@ describe('ChatPlugin', () => {
         suggestedActionsService: expect.any(Object),
         confirmationService: expect.any(Object),
         humanInputService: expect.any(Object),
+        starterSuggestionsService: expect.any(StarterSuggestionsService),
       });
     });
 

@@ -101,6 +101,7 @@ export interface ExploreSetupDependencies {
   urlForwarding: UrlForwardingSetup;
   home?: HomePublicPluginSetup;
   contextProvider?: ContextProviderStart;
+  chat?: import('../../chat/public').ChatPluginSetup;
   visualizations: VisualizationsSetup;
   data: DataPublicPluginSetup;
   usageCollection: UsageCollectionSetup;

@@ -9,6 +9,7 @@ import { ChatService } from '../services/chat_service';
 import { SuggestedActionsService } from '../services/suggested_action/suggested_actions_service';
 import { ConfirmationService } from '../services/confirmation_service';
 import { HumanInputService } from '../services/human_input_service';
+import { StarterSuggestionsService } from '../services/starter_suggestions';
 
 // Mock services
 jest.mock('../services/chat_service');
@@ -21,6 +22,7 @@ describe('ChatContext', () => {
   let mockSuggestedActionsService: jest.Mocked<SuggestedActionsService>;
   let mockConfirmationService: jest.Mocked<ConfirmationService>;
   let mockHumanInputService: jest.Mocked<HumanInputService>;
+  let mockStarterSuggestionsService: jest.Mocked<StarterSuggestionsService>;
 
   beforeEach(() => {
     mockChatService = {
@@ -58,6 +60,14 @@ describe('ChatContext', () => {
       ask: jest.fn(),
       answer: jest.fn(),
       cleanAll: jest.fn(),
+    } as any;
+
+    mockStarterSuggestionsService = {
+      registerProvider: jest.fn(),
+      getSuggestions: jest.fn(),
+      onInvalidate: jest.fn(),
+      getRegisteredAppIds: jest.fn(),
+      clear: jest.fn(),
     } as any;
   });
 
@@ -270,6 +280,7 @@ describe('ChatContext', () => {
           suggestedActionsService={mockSuggestedActionsService}
           confirmationService={mockConfirmationService}
           humanInputService={mockHumanInputService}
+          starterSuggestionsService={mockStarterSuggestionsService}
         >
           <TestComponent />
         </ChatProvider>
@@ -279,7 +290,7 @@ describe('ChatContext', () => {
       expect(screen.getByTestId('has-suggested-actions-service')).toHaveTextContent('true');
       expect(screen.getByTestId('has-confirmation-service')).toHaveTextContent('true');
       expect(screen.getByTestId('context-keys')).toHaveTextContent(
-        'chatService,confirmationService,humanInputService,suggestedActionsService'
+        'chatService,confirmationService,humanInputService,starterSuggestionsService,suggestedActionsService'
       );
     });
   });
